@@ -4,16 +4,10 @@ const { getPage } = require('../utils/helpers/static');
 const { toJSON } = require('../utils/helpers/method');
 
 const articleSchema = new mongoose.Schema({
-	name: {
+	title: {
 		type: String,
 		required: true,
 		unique: true,
-		trim: true,
-		min: 4,
-	},
-	section: {
-		type: String,
-		required: true,
 		trim: true,
 		min: 4,
 	},

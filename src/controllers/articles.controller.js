@@ -15,8 +15,7 @@ async function get(req, res, next) {
 async function create(req, res, next) {
 	try {
 		const article = new Article({
-			name: req.body.name,
-			section: req.body.section,
+			title: req.body.title,
 			url: req.body.url,
 		});
 
@@ -31,7 +30,7 @@ async function create(req, res, next) {
 
 async function update(req, res, next) {
 	const updates = Object.keys(req.body);
-	const allowedFeildsToChange = new Set(['name', 'section', 'url']);
+	const allowedFeildsToChange = new Set(['title', 'url']);
 
 	try {
 		const isValidUpdates = updates.every((update) => allowedFeildsToChange.has(update));
