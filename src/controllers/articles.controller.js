@@ -1,7 +1,18 @@
 const Article = require('../models/article.model');
 const sharp = require('sharp');
+const { RequestError, NotFoundError } = require('../utils/errors/request-errors');
+const { validateQueryString, validateUpdates } = require('./utils/validators.controller.utils');
+const { articlesParameterSchemas } = require('./utils/parameter-schemas.controller.utils');
 
+//	Get all articles
 async function get(req, res, next) {
+	console.log(req.query);
+
+	//
+	//	TODO
+	//	?Query for images?
+	//
+
 	try {
 		const articles = await Article.find({});
 
@@ -12,6 +23,7 @@ async function get(req, res, next) {
 	}
 }
 
+//	Create new article
 async function create(req, res, next) {
 	try {
 		const article = new Article({
@@ -28,15 +40,21 @@ async function create(req, res, next) {
 	}
 }
 
+//	Update existing article
 async function update(req, res, next) {
-	const updates = Object.keys(req.body);
-	const allowedFeildsToChange = new Set(['title', 'url']);
-
 	try {
-		const isValidUpdates = updates.every((update) => allowedFeildsToChange.has(update));
-		if (!isValidUpdates) throw new Error('Invalid updates');
+		const updates = Object.keys(req.body);
+
+		//	Throws an error if request has invalid update fields
+		validateUpdates(updates, articlesParameterSchemas.allowedUpdates);
 
 		const article = await Article.findById(req.params.id);
+
+		if (!article)
+			throw new NotFoundError({
+				type: 'article',
+				id: req.params.id,
+			});
 
 		updates.forEach((update) => (article[update] = req.body[update]));
 
@@ -53,6 +71,12 @@ async function remove(req, res, next) {
 	try {
 		const article = await Article.findByIdAndDelete(req.params.id);
 
+		if (!article)
+			throw new NotFoundError({
+				type: 'article',
+				id: req.params.id,
+			});
+
 		res.status(200).send({ article });
 	} catch (error) {
 		console.error(error);
@@ -61,12 +85,16 @@ async function remove(req, res, next) {
 }
 
 async function createImage(req, res, next) {
-	const buffer = await sharp(req.file.buffer).resize({ height: 250 }).png().toBuffer();
-
 	try {
+		const buffer = await sharp(req.file.buffer).resize({ height: 250 }).png().toBuffer();
+
 		const article = await Article.findById(req.params.id);
 
-		if (!article) return res.status(404).send();
+		if (!article)
+			throw new NotFoundError({
+				type: 'article',
+				id: req.params.id,
+			});
 
 		article.image = buffer;
 
@@ -78,10 +106,41 @@ async function createImage(req, res, next) {
 	}
 }
 
+async function getPage(req, res, next) {
+	try {
+		//	Throws an error in case if parameters are invalid!
+		let { page, itemsPerPage } = validateQueryString(req.query, articlesParameterSchemas.getPage);
+
+		const [articles, navigation] = await Article.getPage(page, itemsPerPage);
+
+		res.send({
+			articles,
+			navigation,
+		});
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+}
+
+async function errorHandler(error, req, res, next) {
+	if (res.headersSent) {
+		return next(error);
+	}
+
+	if (error instanceof RequestError) {
+		return res.status(error.responseStatus).send(error.responseBody);
+	}
+
+	next(error);
+}
+
 module.exports = {
 	create,
 	get,
 	update,
 	remove,
 	createImage,
+	getPage,
+	errorHandler,
 };
