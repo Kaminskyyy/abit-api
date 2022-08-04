@@ -6,8 +6,6 @@ const { articlesParameterSchemas } = require('./utils/parameter-schemas.controll
 
 //	Get all articles
 async function get(req, res, next) {
-	console.log(req.query);
-
 	//
 	//	TODO
 	//	?Query for images?
@@ -97,7 +95,7 @@ async function createImage(req, res, next) {
 		article.image = await sharp(req.file.buffer).resize({ height: 250 }).png().toBuffer();
 
 		await article.save();
-		res.send({ article });
+		res.status(201).send({ article });
 	} catch (error) {
 		console.error(error);
 		next(error);

@@ -4,7 +4,7 @@ async function getPage(page, itemsPerPage = 5) {
 	const items = await Model.aggregate()
 		.skip((page - 1) * itemsPerPage)
 		.limit(itemsPerPage)
-		.project({ image: 0 });
+		.project({ image: 0, __v: 0 });
 
 	const totalItemsNum = await Model.estimatedDocumentCount();
 
