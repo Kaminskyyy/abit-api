@@ -4,6 +4,7 @@ function toJSON() {
 	const itemObject = item.toObject();
 
 	delete itemObject.__v;
+	delete itemObject.__t;
 
 	return itemObject;
 }

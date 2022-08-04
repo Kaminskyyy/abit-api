@@ -6,8 +6,6 @@ async function getPage(page, itemsPerPage = 5) {
 		.limit(itemsPerPage)
 		.project({ image: 0 });
 
-	console.log(items);
-
 	const totalItemsNum = await Model.estimatedDocumentCount();
 
 	const pages = {
@@ -17,6 +15,12 @@ async function getPage(page, itemsPerPage = 5) {
 	};
 
 	return [items, pages];
+}
+
+async function getHeads() {
+	const Model = this;
+
+	const heads = await Model.findMany({ head_of_department });
 }
 
 module.exports = { getPage };
