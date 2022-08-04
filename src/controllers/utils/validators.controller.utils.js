@@ -1,5 +1,9 @@
 const { typeCheck } = require('type-check');
-const { RequiredQueryError, InvalidQueryTypeError } = require('../../utils/errors/request-errors');
+const {
+	RequiredQueryError,
+	InvalidQueryTypeError,
+	InvalidUpdatesError,
+} = require('../../utils/errors/request-errors');
 
 //	Query parameters validator
 function validateQueryString(queryObject, parametersSchema) {

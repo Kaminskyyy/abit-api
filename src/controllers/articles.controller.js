@@ -60,7 +60,7 @@ async function update(req, res, next) {
 
 		await article.save();
 
-		res.status(201).send({ article });
+		res.status(200).send({ article });
 	} catch (error) {
 		console.error(error);
 		next(error);

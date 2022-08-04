@@ -1,9 +1,3 @@
-//	Load environment variables
-require('dotenv').config();
-
-//	connect mongoose
-require('./src/db/mongoose.db');
-
 const { app } = require('./src/app');
 
 const port = process.env.PORT;

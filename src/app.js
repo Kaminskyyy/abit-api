@@ -1,3 +1,9 @@
+//	Load environment variables
+require('dotenv').config();
+
+//	connect mongoose
+require('./db/mongoose.db');
+
 const express = require('express');
 const cors = require('cors');
 const articlesRouter = require('./routes/articles.route');

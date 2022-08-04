@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { messageEntitiesSchema } = require('../schemas/message-entities');
+const { messageEntitiesSchema } = require('./message-entities.schema');
 
 const questionSchema = new mongoose.Schema({
 	question_id: {
