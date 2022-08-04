@@ -86,8 +86,6 @@ async function remove(req, res, next) {
 
 async function createImage(req, res, next) {
 	try {
-		const buffer = await sharp(req.file.buffer).resize({ height: 250 }).png().toBuffer();
-
 		const article = await Article.findById(req.params.id);
 
 		if (!article)
@@ -96,7 +94,7 @@ async function createImage(req, res, next) {
 				id: req.params.id,
 			});
 
-		article.image = buffer;
+		article.image = await sharp(req.file.buffer).resize({ height: 250 }).png().toBuffer();
 
 		await article.save();
 		res.send({ article });
@@ -123,18 +121,6 @@ async function getPage(req, res, next) {
 	}
 }
 
-async function errorHandler(error, req, res, next) {
-	if (res.headersSent) {
-		return next(error);
-	}
-
-	if (error instanceof RequestError) {
-		return res.status(error.responseStatus).send(error.responseBody);
-	}
-
-	next(error);
-}
-
 module.exports = {
 	create,
 	get,
@@ -142,5 +128,4 @@ module.exports = {
 	remove,
 	createImage,
 	getPage,
-	errorHandler,
 };

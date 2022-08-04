@@ -7,6 +7,9 @@ require('./db/mongoose.db');
 const express = require('express');
 const cors = require('cors');
 const articlesRouter = require('./routes/articles.route');
+const studentsRouter = require('./routes/students.route');
+
+const { generalErrorHandler, requestErrorHandler } = require('./middleware/error-handlers');
 
 const app = express();
 
@@ -17,19 +20,13 @@ app.use(express.urlencoded({ parameterLimit: 10000000, limit: '50mb', extended: 
 app.use(express.raw({ limit: '50mb' }));
 app.use(express.json());
 
+//	Routers
 app.use('/api/articles', articlesRouter);
+app.use('/api/students', studentsRouter);
 
-app.use((error, req, res, next) => {
-	if (res.headersSent) {
-		return next(error);
-	}
-
-	console.log(error);
-
-	res.status(500).send({
-		error: error.messsage,
-	});
-});
+//	Error handlers
+app.use(requestErrorHandler);
+app.use(generalErrorHandler);
 
 module.exports = {
 	app,

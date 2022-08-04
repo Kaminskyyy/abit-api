@@ -21,7 +21,20 @@ class InvalidUpdatesError extends RequestError {
 		});
 
 		this.name = 'InvalidUpdatesError';
-		this.invalidUpdates = invalidUpdateFields;
+	}
+}
+
+class RequiredFieldError extends RequestError {
+	constructor(missingField) {
+		super({
+			message: 'Missing a required field',
+			responseStatus: 400,
+			responseBody: {
+				missing_field: missingField,
+			},
+		});
+
+		this.name = 'RequiredFieldError';
 	}
 }
 
@@ -36,7 +49,6 @@ class RequiredQueryError extends RequestError {
 		});
 
 		this.name = 'RequiredQueryError';
-		this.missingQueries = query;
 	}
 }
 
@@ -54,7 +66,6 @@ class InvalidQueryTypeError extends RequestError {
 		});
 
 		this.name = 'InvalidQueryTypeError';
-		this.invalidQueryParameter = query;
 	}
 }
 
@@ -69,7 +80,6 @@ class NotFoundError extends RequestError {
 		});
 
 		this.name = 'NotFoundError';
-		this.requestedObject = requestedObject;
 	}
 }
 
@@ -79,4 +89,5 @@ module.exports = {
 	NotFoundError,
 	RequiredQueryError,
 	InvalidQueryTypeError,
+	RequiredFieldError,
 };

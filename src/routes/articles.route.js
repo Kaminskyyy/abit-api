@@ -21,7 +21,4 @@ router.post('/:id/image', uploadImage.single('article_image'), articlesControlle
 //	Get page of article (for bot)
 router.get('/getPage', articlesController.getPage);
 
-//	Handler errors
-router.use(articlesController.errorHandler);
-
 module.exports = router;
