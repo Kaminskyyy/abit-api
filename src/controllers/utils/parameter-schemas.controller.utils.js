@@ -24,8 +24,11 @@ const studentsAllowedFiedlsToChangle = new Set([
 	'group',
 	'year',
 	'head_of_department',
-	'additional_info',
 	'contacts',
+	'speciality',
+	'university_department',
+	'educational_program',
+	'dorm',
 ]);
 
 module.exports = {
