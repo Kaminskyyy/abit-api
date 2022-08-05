@@ -1,10 +1,10 @@
 const sharp = require('sharp');
 const Student = require('../models/student.models/student.model');
-const superheroStudent = require('../models/student.models/superhero-student.model');
+const SuperheroStudent = require('../models/student.models/superhero-student.model');
 const SCHeadStudent = require('../models/student.models/sc-head-student.model');
 const { NotFoundError } = require('../utils/errors/request-errors');
-const { validateUpdates } = require('./utils/validators.controller.utils');
-const { studentsParameterSchemas } = require('./utils/parameter-schemas.controller.utils');
+const { validateUpdates, validateQueryString } = require('./utils/validators.controller.utils');
+const { studentsParameterSchemas, common } = require('./utils/parameter-schemas.controller.utils');
 
 //	Add new department head
 async function createHead(req, res, next) {
@@ -25,7 +25,7 @@ async function createHead(req, res, next) {
 //	Add new superhero
 async function createSuperhero(req, res, next) {
 	try {
-		const student = new superheroStudent({
+		const student = new SuperheroStudent({
 			...req.body,
 		});
 
@@ -53,7 +53,25 @@ async function getHeads(req, res, next) {
 //	Get all superheroes
 async function getSuperheroes(req, res, next) {
 	try {
-		const superheroes = await superheroStudent.find({});
+		let query = validateQueryString(req.query, common.paginationQueryParameters);
+
+		const exclude = [];
+		if (!query.images) exclude.push('-image');
+
+		if (query.page) {
+			const [superheroes, navigation] = await SuperheroStudent.getPage(
+				query.page,
+				query.itemsPerPage,
+				exclude
+			);
+
+			return res.send({
+				superheroes,
+				navigation,
+			});
+		}
+
+		const superheroes = await SuperheroStudent.find({}).select(exclude);
 
 		res.send({ superheroes });
 	} catch (error) {
@@ -118,7 +136,8 @@ async function createImage(req, res, next) {
 				id: req.params.id,
 			});
 
-		student.image = await sharp(req.file.buffer).resize({ height: 250 }).png().toBuffer();
+		// .resize({ height: 250 });
+		student.image = await sharp(req.file.buffer).png().toBuffer();
 
 		await student.save();
 

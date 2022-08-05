@@ -1,6 +1,4 @@
-//
-////////	Articles
-const articlesGetPageParameters = {
+const paginationQueryParameters = {
 	page: {
 		type: 'Int',
 		required: false,
@@ -20,8 +18,6 @@ const articlesGetPageParameters = {
 
 const articlesAllowedFeildsToChange = new Set(['title', 'url']);
 
-//
-////////	Students
 const studentsAllowedFiedlsToChangle = new Set([
 	'first_name',
 	'last_name',
@@ -33,8 +29,10 @@ const studentsAllowedFiedlsToChangle = new Set([
 ]);
 
 module.exports = {
+	common: {
+		paginationQueryParameters,
+	},
 	articlesParameterSchemas: {
-		getPage: articlesGetPageParameters,
 		allowedUpdates: articlesAllowedFeildsToChange,
 	},
 	studentsParameterSchemas: {

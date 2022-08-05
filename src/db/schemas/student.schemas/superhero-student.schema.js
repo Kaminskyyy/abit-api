@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
-
-//
-//	TODO
-//	Add some additional info about superhero
-//
+const { getPage } = require('../../utils/helpers/static');
 
 const superheroStudentSchema = new mongoose.Schema({
 	year: {
@@ -31,5 +27,7 @@ const superheroStudentSchema = new mongoose.Schema({
 		required: true,
 	},
 });
+
+superheroStudentSchema.static('getPage', getPage);
 
 module.exports = superheroStudentSchema;
