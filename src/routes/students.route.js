@@ -6,14 +6,14 @@ const router = new express.Router();
 //	Get heads of the sc departments
 router.get('/heads', studentsController.getHeads);
 
+//	Add new department head
+router.post('/heads', studentsController.createHead);
+
 //	Get all superheroes
 router.get('/superheroes', studentsController.getSuperheroes);
 
-//	Add new department head
-router.post('/head', studentsController.createHead);
-
 //	Add new superhero
-router.post('/superhero', studentsController.createSuperhero);
+router.post('/superheroes', studentsController.createSuperhero);
 
 //	Update student
 router.patch('/:id', studentsController.update);
