@@ -6,13 +6,23 @@ const { articlesParameterSchemas } = require('./utils/parameter-schemas.controll
 
 //	Get all articles
 async function get(req, res, next) {
-	//
-	//	TODO
-	//	?Query for images?
-	//
-
 	try {
-		const articles = await Article.find({});
+		//	Throws an error in case if parameters are invalid!
+		let query = validateQueryString(req.query, articlesParameterSchemas.getPage);
+
+		const exclude = [];
+		if (!query.images) exclude.push('-image');
+
+		if (query.page) {
+			const [articles, navigation] = await Article.getPage(query.page, query.itemsPerPage, exclude);
+
+			return res.send({
+				articles,
+				navigation,
+			});
+		}
+
+		const articles = await Article.find({}).select(exclude);
 
 		res.send({ articles });
 	} catch (error) {
@@ -92,27 +102,11 @@ async function createImage(req, res, next) {
 				id: req.params.id,
 			});
 
-		article.image = await sharp(req.file.buffer).resize({ height: 250 }).png().toBuffer();
+		// .resize({ height: 720 })
+		article.image = await sharp(req.file.buffer).png().toBuffer();
 
 		await article.save();
 		res.status(201).send({ article });
-	} catch (error) {
-		console.error(error);
-		next(error);
-	}
-}
-
-async function getPage(req, res, next) {
-	try {
-		//	Throws an error in case if parameters are invalid!
-		let { page, itemsPerPage } = validateQueryString(req.query, articlesParameterSchemas.getPage);
-
-		const [articles, navigation] = await Article.getPage(page, itemsPerPage);
-
-		res.send({
-			articles,
-			navigation,
-		});
 	} catch (error) {
 		console.error(error);
 		next(error);
@@ -125,5 +119,4 @@ module.exports = {
 	update,
 	remove,
 	createImage,
-	getPage,
 };

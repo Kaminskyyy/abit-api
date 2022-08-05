@@ -3,12 +3,18 @@
 const articlesGetPageParameters = {
 	page: {
 		type: 'Int',
-		required: true,
+		required: false,
+		default: undefined,
 	},
 	itemsPerPage: {
 		type: 'Int',
 		required: false,
 		default: 5,
+	},
+	images: {
+		type: 'Int',
+		required: false,
+		default: 1,
 	},
 };
 

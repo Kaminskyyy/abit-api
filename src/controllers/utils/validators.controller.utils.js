@@ -18,6 +18,7 @@ function validateQueryString(queryObject, parametersSchema) {
 		//	Set default value in case if optional paramater has omitted
 		if (!queries.has(parameter)) {
 			queryObject[parameter] = parametersSchema[parameter].default;
+			continue;
 		}
 
 		//	Typecast
@@ -26,9 +27,14 @@ function validateQueryString(queryObject, parametersSchema) {
 		}
 
 		//	Typecast
-		if (parametersSchema[parameter].type === 'Float') {
+		else if (parametersSchema[parameter].type === 'Float') {
 			queryObject[parameter] = parseFloat(queryObject[parameter]);
 		}
+
+		// //	Typecast
+		// else if (parametersSchema[parameter].type === 'Boolean') {
+		// 	queryObject[parameter] = Boolean(queryObject[parameter]);
+		// }
 
 		//	Type check
 		if (!typeCheck(parametersSchema[parameter].type, queryObject[parameter])) {

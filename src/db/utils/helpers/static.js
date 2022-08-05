@@ -1,10 +1,12 @@
-async function getPage(page, itemsPerPage = 5) {
+async function getPage(page, itemsPerPage = 5, exclude = []) {
 	const Model = this;
+
+	exclude.push('-__v');
 
 	const items = await Model.aggregate()
 		.skip((page - 1) * itemsPerPage)
 		.limit(itemsPerPage)
-		.project({ image: 0, __v: 0 });
+		.project(exclude.join(' '));
 
 	const totalItemsNum = await Model.estimatedDocumentCount();
 
@@ -15,12 +17,6 @@ async function getPage(page, itemsPerPage = 5) {
 	};
 
 	return [items, pages];
-}
-
-async function getHeads() {
-	const Model = this;
-
-	const heads = await Model.findMany({ head_of_department });
 }
 
 module.exports = { getPage };

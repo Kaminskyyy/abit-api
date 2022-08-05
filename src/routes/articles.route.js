@@ -18,7 +18,4 @@ router.delete('/:id', articlesController.remove);
 //	Add image to article
 router.post('/:id/image', uploadImage.single('article_image'), articlesController.createImage);
 
-//	Get page of article (for bot)
-router.get('/getPage', articlesController.getPage);
-
 module.exports = router;
