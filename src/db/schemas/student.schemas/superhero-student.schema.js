@@ -6,11 +6,27 @@ const mongoose = require('mongoose');
 //
 
 const superheroStudentSchema = new mongoose.Schema({
-	additional_info: {
-		type: String,
+	year: {
+		type: Number,
+		required: true,
+		min: 1,
+		max: 6,
+	},
+	speciality: {
+		type: Number,
 		required: true,
 	},
-	year: {
+	university_department: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	educational_program: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	dorm: {
 		type: Number,
 		required: true,
 	},
