@@ -122,7 +122,7 @@ async function createImage(req, res, next) {
 
 		await student.save();
 
-		res.send({ student });
+		res.status(201).send({ student });
 	} catch (error) {
 		console.error(error);
 		next(error);
