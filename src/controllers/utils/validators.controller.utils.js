@@ -3,6 +3,7 @@ const {
 	RequiredQueryError,
 	InvalidQueryTypeError,
 	InvalidUpdatesError,
+	InvalidQueryValueError,
 } = require('../../utils/errors/request-errors');
 
 //	Query parameters validator
@@ -29,6 +30,14 @@ function validateQueryString(queryObject, parametersSchema) {
 		//	Type check
 		if (!typeCheck(parametersSchema[parameter].type, queryObject[parameter])) {
 			throw new InvalidQueryTypeError(parameter, parametersSchema[parameter].type);
+		}
+
+		//	Check if a parameter has an allowed value
+		if (
+			parametersSchema[parameter].allowedValues &&
+			!parametersSchema[parameter].allowedValues.includes(queryObject[parameter])
+		) {
+			throw new InvalidQueryValueError(parameter, parametersSchema[parameter].allowedValues);
 		}
 	}
 

@@ -69,6 +69,23 @@ class InvalidQueryTypeError extends RequestError {
 	}
 }
 
+class InvalidQueryValueError extends RequestError {
+	constructor(query, validValues) {
+		super({
+			message: 'Invalid query parameter value',
+			responseStatus: 400,
+			responseBody: {
+				query: {
+					parameter: query,
+					valid_values: validValues,
+				},
+			},
+		});
+
+		this.name = 'InvalidQueryValueError';
+	}
+}
+
 class NotFoundError extends RequestError {
 	constructor(requestedObject) {
 		super({
@@ -89,5 +106,6 @@ module.exports = {
 	NotFoundError,
 	RequiredQueryError,
 	InvalidQueryTypeError,
+	InvalidQueryValueError,
 	RequiredFieldError,
 };

@@ -1,8 +1,32 @@
-const paginationQueryParameters = {
+const studentsQueryString = {
 	page: {
 		type: 'Number',
 		required: false,
-		default: undefined,
+		default: null, // null = all
+	},
+	itemsPerPage: {
+		type: 'Number',
+		required: false,
+		default: 5,
+	},
+	images: {
+		type: 'Number',
+		required: false,
+		default: 1,
+	},
+	speciality: {
+		type: 'Number',
+		required: false,
+		default: null, // null = all
+		allowedValues: [122, 124],
+	},
+};
+
+const articlesQueryString = {
+	page: {
+		type: 'Number',
+		required: false,
+		default: null,
 	},
 	itemsPerPage: {
 		type: 'Number',
@@ -32,13 +56,12 @@ const studentsAllowedFiedlsToChangle = new Set([
 ]);
 
 module.exports = {
-	common: {
-		paginationQueryParameters,
-	},
 	articlesParameterSchemas: {
 		allowedUpdates: articlesAllowedFeildsToChange,
+		getQueryString: articlesQueryString,
 	},
 	studentsParameterSchemas: {
 		allowedUpdates: studentsAllowedFiedlsToChangle,
+		superheroesQueryString: studentsQueryString,
 	},
 };

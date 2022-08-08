@@ -2,13 +2,13 @@ const Article = require('../models/article.model');
 const sharp = require('sharp');
 const { RequestError, NotFoundError } = require('../utils/errors/request-errors');
 const { validateQueryString, validateUpdates } = require('./utils/validators.controller.utils');
-const { common } = require('./utils/parameter-schemas.controller.utils');
+const { articlesParameterSchemas } = require('./utils/parameter-schemas.controller.utils');
 
 //	Get all articles
 async function get(req, res, next) {
 	try {
 		//	Throws an error in case if parameters are invalid!
-		let query = validateQueryString(req.query, common.paginationQueryParameters);
+		let query = validateQueryString(req.query, articlesParameterSchemas.getQueryString);
 
 		const exclude = [];
 		if (!query.images) exclude.push('-image');

@@ -2,9 +2,9 @@ const sharp = require('sharp');
 const Student = require('../models/student.models/student.model');
 const SuperheroStudent = require('../models/student.models/superhero-student.model');
 const SCHeadStudent = require('../models/student.models/sc-head-student.model');
-const { NotFoundError } = require('../utils/errors/request-errors');
+const { NotFoundError, InvalidQueryValueError } = require('../utils/errors/request-errors');
 const { validateUpdates, validateQueryString } = require('./utils/validators.controller.utils');
-const { studentsParameterSchemas, common } = require('./utils/parameter-schemas.controller.utils');
+const { studentsParameterSchemas } = require('./utils/parameter-schemas.controller.utils');
 
 //	Add new department head
 async function createHead(req, res, next) {
@@ -53,16 +53,23 @@ async function getHeads(req, res, next) {
 //	Get all superheroes
 async function getSuperheroes(req, res, next) {
 	try {
-		let query = validateQueryString(req.query, common.paginationQueryParameters);
+		let query = validateQueryString(req.query, studentsParameterSchemas.superheroesQueryString);
 
 		const exclude = [];
+		const dbQuery = {};
+
 		if (!query.images) exclude.push('-image');
+
+		if (query.speciality) {
+			dbQuery.speciality = query.speciality;
+		}
 
 		if (query.page) {
 			const [superheroes, navigation] = await SuperheroStudent.getPage(
 				query.page,
 				query.itemsPerPage,
-				exclude
+				exclude,
+				dbQuery
 			);
 
 			return res.send({
@@ -71,7 +78,7 @@ async function getSuperheroes(req, res, next) {
 			});
 		}
 
-		const superheroes = await SuperheroStudent.find({}).select(exclude);
+		const superheroes = await SuperheroStudent.find(dbQuery).select(exclude);
 
 		res.send({ superheroes });
 	} catch (error) {
