@@ -22,19 +22,9 @@ function validateQueryString(queryObject, parametersSchema) {
 		}
 
 		//	Typecast
-		if (parametersSchema[parameter].type === 'Int') {
+		if (parametersSchema[parameter].type === 'Number') {
 			queryObject[parameter] = parseInt(queryObject[parameter]);
 		}
-
-		//	Typecast
-		else if (parametersSchema[parameter].type === 'Float') {
-			queryObject[parameter] = parseFloat(queryObject[parameter]);
-		}
-
-		// //	Typecast
-		// else if (parametersSchema[parameter].type === 'Boolean') {
-		// 	queryObject[parameter] = Boolean(queryObject[parameter]);
-		// }
 
 		//	Type check
 		if (!typeCheck(parametersSchema[parameter].type, queryObject[parameter])) {

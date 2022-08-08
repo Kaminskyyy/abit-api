@@ -1,16 +1,16 @@
 const paginationQueryParameters = {
 	page: {
-		type: 'Int',
+		type: 'Number',
 		required: false,
 		default: undefined,
 	},
 	itemsPerPage: {
-		type: 'Int',
+		type: 'Number',
 		required: false,
 		default: 5,
 	},
 	images: {
-		type: 'Int',
+		type: 'Number',
 		required: false,
 		default: 1,
 	},

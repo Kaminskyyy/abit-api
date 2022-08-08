@@ -1,6 +1,9 @@
 async function getPage(page, itemsPerPage = 5, exclude = []) {
 	const Model = this;
 
+	page = +page;
+	itemsPerPage = +itemsPerPage;
+
 	exclude.push('-__v');
 	exclude.push('-__t');
 
