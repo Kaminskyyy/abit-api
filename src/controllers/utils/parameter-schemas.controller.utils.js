@@ -55,6 +55,8 @@ const studentsAllowedFiedlsToChangle = new Set([
 	'dorm',
 ]);
 
+const questionsAllowedFieldsToChange = new Set(['message_id']);
+
 module.exports = {
 	articlesParameterSchemas: {
 		allowedUpdates: articlesAllowedFeildsToChange,
@@ -63,5 +65,8 @@ module.exports = {
 	studentsParameterSchemas: {
 		allowedUpdates: studentsAllowedFiedlsToChangle,
 		superheroesQueryString: studentsQueryString,
+	},
+	questionsParameterSchemas: {
+		allowedUpdates: questionsAllowedFieldsToChange,
 	},
 };

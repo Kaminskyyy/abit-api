@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { toJSON } = require('../utils/helpers/method');
 
 const userSchema = new mongoose.Schema({
 	chat_id: {
@@ -20,8 +21,10 @@ const userSchema = new mongoose.Schema({
 
 userSchema.virtual('questions', {
 	ref: 'Question',
-	localField: '_id',
+	localField: 'chat_id',
 	foreignField: 'author',
 });
+
+userSchema.method('toJSON', toJSON);
 
 module.exports = userSchema;

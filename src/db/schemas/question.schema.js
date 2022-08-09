@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
+const { toJSON } = require('../utils/helpers/method');
 const { messageEntitiesSchema } = require('./message-entities.schema');
 
 const questionSchema = new mongoose.Schema({
 	question_id: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	text: {
 		type: String,
@@ -23,5 +25,7 @@ const questionSchema = new mongoose.Schema({
 		required: true,
 	},
 });
+
+questionSchema.method('toJSON', toJSON);
 
 module.exports = questionSchema;

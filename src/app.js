@@ -8,6 +8,7 @@ const express = require('express');
 const cors = require('cors');
 const articlesRouter = require('./routes/articles.route');
 const studentsRouter = require('./routes/students.route');
+const questionsRouter = require('./routes/questions.route');
 
 const { generalErrorHandler, requestErrorHandler } = require('./middleware/error-handlers');
 
@@ -23,6 +24,7 @@ app.use(express.json());
 //	Routers
 app.use('/api/articles', articlesRouter);
 app.use('/api/students', studentsRouter);
+app.use('/api/questions', questionsRouter);
 
 //	Error handlers
 app.use(requestErrorHandler);
