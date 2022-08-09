@@ -6,7 +6,6 @@ const questionSchema = new mongoose.Schema({
 	question_id: {
 		type: String,
 		required: true,
-		unique: true,
 	},
 	text: {
 		type: String,
@@ -16,12 +15,11 @@ const questionSchema = new mongoose.Schema({
 	},
 	entities: [messageEntitiesSchema],
 	message_id: {
-		type: String,
+		type: Number,
 		required: true,
 	},
-	author: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User',
+	author_chat_id: {
+		type: Number,
 		required: true,
 	},
 });

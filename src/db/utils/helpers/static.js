@@ -15,8 +15,6 @@ async function getPage(page, itemsPerPage = 5, exclude = [], query = {}) {
 
 	const totalItemsNum = await Model.countDocuments(query);
 
-	console.log(totalItemsNum);
-
 	const pages = {
 		current: page,
 		left: page > 1 ? page - 1 : null,

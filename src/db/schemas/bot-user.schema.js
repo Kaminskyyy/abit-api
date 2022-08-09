@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { toJSON } = require('../utils/helpers/method');
 
-const userSchema = new mongoose.Schema({
+const botUserSchema = new mongoose.Schema({
 	chat_id: {
 		type: String,
 		required: true,
@@ -19,12 +19,6 @@ const userSchema = new mongoose.Schema({
 	},
 });
 
-userSchema.virtual('questions', {
-	ref: 'Question',
-	localField: 'chat_id',
-	foreignField: 'author',
-});
+botUserSchema.method('toJSON', toJSON);
 
-userSchema.method('toJSON', toJSON);
-
-module.exports = userSchema;
+module.exports = botUserSchema;

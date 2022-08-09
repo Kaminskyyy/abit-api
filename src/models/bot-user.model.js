@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const schema = require('../db/schemas/user.schema');
+const schema = require('../db/schemas/bot-user.schema');
 
-const User = mongoose.model('User', schema);
+const BotUser = mongoose.model('BotUser', schema);
 
-module.exports = User;
+module.exports = BotUser;
